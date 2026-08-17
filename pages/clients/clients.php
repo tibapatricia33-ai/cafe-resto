@@ -325,7 +325,7 @@ if (!$resultat) {
         </a>
 
 
-        <a href="produits/produits.php">
+        <a href="/cafe-resto/produits/produits.php">
 
             📦 Produits
 
