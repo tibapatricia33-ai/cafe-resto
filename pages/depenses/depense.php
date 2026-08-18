@@ -1,7 +1,7 @@
 
 <?php
 
-include "../php/connexion.php";
+require_once __DIR__ . '/../../php/connexion.php';
 
 /*
 =========================================================
@@ -468,7 +468,7 @@ $depensesMois = $data["total"];
 
     <link
         rel="stylesheet"
-        href="../css/style.css">
+        href="../../css/style.css">
 
 
     <link
@@ -895,7 +895,7 @@ $depensesMois = $data["total"];
                                         <!-- MODIFIER -->
 
                                         <a
-                                            href="/../depenses/depense.php?modifier=<?php echo $depense['id_depense']; ?>"
+                                            href="depense.php?modifier=<?php echo $depense['id_depense']; ?>"
                                             class="btn btn-primary btn-sm">
 
                                             <i class="bi bi-pencil"></i>
@@ -907,7 +907,7 @@ $depensesMois = $data["total"];
 
                                         <form
                                             method="POST"
-                                            action="/../depenses/depense.php"
+                                            action="depense.php"
                                             style="display:inline;"
                                             onsubmit="return confirm('Voulez-vous vraiment supprimer cette dépense ?');">
 
@@ -1094,6 +1094,22 @@ $depensesMois = $data["total"];
 
                             <option value="unité">
                                 Unité
+                            </option>
+
+                            <option value="paquet">
+                                paquet
+                            </option>
+
+                            <option value="panier">
+                                panier
+                            </option>
+
+                            <option value="palette">
+                                palette
+                            </option>
+
+                            <option value="boite">
+                                panier
                             </option>
 
                         </select>
