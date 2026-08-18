@@ -853,7 +853,7 @@ $commandesLivrees = $dataLivrees['total'];
                     ?>
 
 
-                    </tbody>
+                    </body>
 
                 </table>
 
