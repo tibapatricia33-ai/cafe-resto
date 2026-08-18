@@ -304,13 +304,11 @@ if (!$resultat) {
 <!-- =====================================================
      MENU ADMINISTRATEUR
      ===================================================== -->
+<?php
 
-     <?php
- include "../../partials/sidebar.php";
+     include "../partials/sidebar.php";
 
- ?>
-
-
+?>
 
 <!-- =====================================================
      CONTENU PRINCIPAL

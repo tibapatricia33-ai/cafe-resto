@@ -39,10 +39,10 @@
 
 <?php
 
-include "../../partials/sibebar.php";
+include "../../partials/sidebar.php";
 
            ?>
-           
+
 <!-- =========================================
      CONTENU PRINCIPAL
      ========================================= -->

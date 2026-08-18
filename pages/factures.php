@@ -502,7 +502,7 @@ $totalMontant =
 
 <?php
 
-include "../../partials/sibebar.php";
+include "partials/sidebar.php";
 
 ?>
 
@@ -944,6 +944,14 @@ include "../../partials/sibebar.php";
                                         </a>
 
 
+                                        <!-- IMPRIMER -->
+<a href="factures.php?imprime=<?php echo $facture['id_facture']; ?>"
+   class="btn btn-secondary btn-sm"
+   title="Imprimer">
+
+    <i class="bi bi-printer-fill"></i>
+
+</a>
 
                                         <!-- SUPPRIMER -->
 
@@ -1352,7 +1360,6 @@ include "../../partials/sibebar.php";
 
 
                     </button>
-
 
                 </div>
 

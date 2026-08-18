@@ -152,7 +152,7 @@ $totalMobile = $dataMobile['total'];
      ========================================= -->
 
 <?php
-include "../../partials/sibebar.php";
+include "../partials/sidebar.php";
 
 ?>
 

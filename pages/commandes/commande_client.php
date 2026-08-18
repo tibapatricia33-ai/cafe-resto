@@ -1,6 +1,6 @@
 <?php
 
-include "../php/connexion.php";
+include "../../php/connexion.php";
 
 
 // ============================================================
@@ -774,7 +774,7 @@ rel="stylesheet"
 href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
 
-<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../../css/style.css">
 
 
 <style>
@@ -975,6 +975,7 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
      ======================================================= -->
 
      <?php
+     
      include "../../partials/sidebar.php";
 
      ?>

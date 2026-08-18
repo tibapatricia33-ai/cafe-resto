@@ -267,7 +267,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 <?php
 
-include "../../partials/sibebar.php";
+include "../../partials/sidebar.php";
 
 ?>
 

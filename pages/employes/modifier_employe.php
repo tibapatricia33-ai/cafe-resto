@@ -30,7 +30,7 @@ $employe = $resultat->fetch_assoc();
 
 <?php
 
-include "../../partials/sibedar.php";
+include "../../partials/sidebar.php";
 
 ?>
 

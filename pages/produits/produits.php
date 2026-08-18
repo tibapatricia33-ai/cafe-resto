@@ -193,7 +193,7 @@ $produitsDisponibles = $resultDisponible->fetch_assoc()['total'];
 
 <?php
 
-include "../../partials/sibebar.php";
+include "../partials/sidebar.php";
 
 ?>
 
