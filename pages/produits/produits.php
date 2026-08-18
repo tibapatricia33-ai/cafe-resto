@@ -235,7 +235,7 @@ include "../partials/sidebar.php";
         </h2>
 
         <a
-            href="/produits/ajout_produit.php"
+            href="ajout_produit.php"
             class="btn btn-success">
 
             <i class="bi bi-plus-circle"></i>

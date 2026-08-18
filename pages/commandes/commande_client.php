@@ -7,17 +7,6 @@ include "../../php/connexion.php";
 // CRÉATION AUTOMATIQUE DE LA COLONNE IMPRIMÉ
 // ============================================================
 
-$check = $connexion->query("
-    SHOW COLUMNS FROM commande LIKE 'imprime'
-");
-
-if ($check && $check->num_rows == 0) {
-    $connexion->query("
-        ALTER TABLE commande
-        ADD imprime TINYINT(1) NOT NULL DEFAULT 0
-    ");
-}
-
 
 // ============================================================
 // FONCTION SÉCURISÉE

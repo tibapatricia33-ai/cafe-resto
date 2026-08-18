@@ -49,12 +49,14 @@ if (isset($_GET['recherche']) && !empty($_GET['recherche'])) {
 <body>
 
     <!-- MENU LATERAL -->
-   
+
            <?php
 
-           include "../../partials/sidebar.php";
+include(__DIR__ . "/../partials/sidebar.php");
 
-           ?>
+?>
+
+           
 
 
     <!-- CONTENU PRINCIPAL -->
@@ -75,7 +77,7 @@ if (isset($_GET['recherche']) && !empty($_GET['recherche'])) {
 
                 <h2>Gestion des employés</h2>
 
-                <a href="/employes/ajouter_employe.php" class="btn btn-success">
+                <a href="ajouter_employe.php" class="btn btn-success">
                     + Ajouter un employé
                 </a>
 
