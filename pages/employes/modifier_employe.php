@@ -27,17 +27,12 @@ $employe = $resultat->fetch_assoc();
 
 <body>
 
-<h1>Café Resto</h1>
 
-<a href="dashboard.php">🏠 Dashboard</a>
-<a href="produits.php">📦 Produits</a>
-<a href="commandes.php">🛒 Commandes</a>
-<a href="employes.php">👥 Employés</a>
-<a href="clients.php">👤 Clients</a>
-<a href="paiements.php">💳 Paiements</a>
-<a href="depenses.php">💰 Dépenses</a>
-<a href="factures.php">📄 Factures</a>
-<a href="rapports.php">📊 Rapports</a>
+<?php
+
+include "../../partials/sibedar.php";
+
+?>
 
 <div class="container mt-5">
 

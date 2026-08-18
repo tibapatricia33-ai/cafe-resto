@@ -49,57 +49,12 @@ if (isset($_GET['recherche']) && !empty($_GET['recherche'])) {
 <body>
 
     <!-- MENU LATERAL -->
-    <aside class="sidebar">
+   
+           <?php
 
-        <div class="logo">
-            ☕ <span>Café Resto</span>
-        </div>
+           include "../../partials/sidebar.php";
 
-        <nav class="menu">
-
-            <a href="dashboard.php">
-                🏠 <span>Dashboard</span>
-            </a>
-
-            <a href="produits/produits.php">
-                📦 <span>Produits</span>
-            </a>
-
-            <a href="commandes/commandes.php">
-                📝 <span>Commandes</span>
-            </a>
-
-            <a href="employes/employes.php" class="active">
-                👨‍🍳 <span>Employés</span>
-            </a>
-
-            <a href="clients/clients.php">
-                👥 <span>Clients</span>
-            </a>
-
-            <a href="paiements/paiements.php">
-                💳 <span>Paiements</span>
-            </a>
-
-            <a href="depenses/depenses.php">
-                💰 <span>Dépenses</span>
-            </a>
-
-            <a href="factures.php">
-                🧾 <span>Factures</span>
-            </a>
-
-            <a href="rapports.php">
-                📊 <span>Rapports</span>
-            </a>
-
-        </nav>
-
-        <a href="deconnexion.php" class="logout">
-            🚪 <span>Déconnexion</span>
-        </a>
-
-    </aside>
+           ?>
 
 
     <!-- CONTENU PRINCIPAL -->

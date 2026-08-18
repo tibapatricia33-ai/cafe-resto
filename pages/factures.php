@@ -500,101 +500,11 @@ $totalMontant =
      MENU LATERAL
      ===================================================== -->
 
-<aside class="sidebar">
+<?php
 
+include "../../partials/sibebar.php";
 
-    <div class="logo">
-
-        ☕ <span>Café Resto</span>
-
-    </div>
-
-
-
-    <nav class="menu">
-
-
-        <a href="dashboard.php">
-
-            🏠 <span>Dashboard</span>
-
-        </a>
-
-
-        <a href="produits/produits.php">
-
-            📦 <span>Produits</span>
-
-        </a>
-
-
-        <a href="commandes/commandes.php">
-
-            📝 <span>Commandes</span>
-
-        </a>
-
-
-        <a href="employes/employes.php">
-
-            👨‍🍳 <span>Employés</span>
-
-        </a>
-
-
-        <a href="clients/clients.php">
-
-            👥 <span>Clients</span>
-
-        </a>
-
-
-        <a href="paiements/paiements.php">
-
-            💳 <span>Paiements</span>
-
-        </a>
-
-
-        <a href="depenses/depense.php">
-
-            💰 <span>Dépenses</span>
-
-        </a>
-
-
-        <a
-            href="factures.php"
-            class="active">
-
-            🧾 <span>Factures</span>
-
-        </a>
-
-
-        <a href="rapports.php">
-
-            📊 <span>Rapports</span>
-
-        </a>
-
-
-    </nav>
-
-
-
-    <a
-        href="deconnexion.php"
-        class="logout">
-
-        🚪 <span>Déconnexion</span>
-
-    </a>
-
-
-</aside>
-
-
+?>
 
 <!-- =====================================================
      CONTENU PRINCIPAL
