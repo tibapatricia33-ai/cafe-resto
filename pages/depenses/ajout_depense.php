@@ -140,10 +140,10 @@
                         name="unite"
                         id="unite"
                         class="form-select"
-                       >
+                       > choisir une unité
 
-                        <option value="">
-                            Choisir une unité
+                        <option value="panier">
+                            panier
                         </option>
 
                         <option value="sac">
@@ -168,6 +168,14 @@
 
                         <option value="paquet">
                             Paquet
+                        </option>
+
+                        <option value="boites">
+                            boites
+                        </option>
+
+                        <option value="panier">
+                            Panier
                         </option>
 
                     </select>
