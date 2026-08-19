@@ -1595,6 +1595,194 @@ title="Facture imprimée">
 
 </div>
 
+                            <td>
+
+                                <?php
+
+                                $statut =
+                                    $commande['statut']
+                                    ?? '';
+
+                                if (
+                                    $statut ===
+                                    "En attente"
+                                ) {
+
+                                ?>
+
+                                    <span
+                                        class="badge bg-warning text-dark">
+
+                                        🟠 En attente
+
+                                    </span>
+
+                                <?php
+
+                                } elseif (
+                                    $statut ===
+                                    "Livrée"
+                                ) {
+
+                                ?>
+
+                                    <span
+                                        class="badge bg-success">
+
+                                        🟢 Livrée
+
+                                    </span>
+
+                                <?php
+
+                                } else {
+
+                                ?>
+
+                                    <span
+                                        class="badge bg-secondary">
+
+                                        <?php
+
+                                        echo htmlspecialchars(
+                                            $statut
+                                        );
+
+                                        ?>
+
+                                    </span>
+
+                                <?php
+
+                                }
+
+                                ?>
+
+                            </td>
+
+
+
+                            <!-- =========================
+                                 ACTIONS
+                                 ========================= -->
+
+                            <td>
+
+
+                                <!-- MODIFIER -->
+
+                                <a
+                                    href="modifier_commande.php?id=<?php echo $commande['id_commande']; ?>"
+                                    class="btn btn-primary btn-sm">
+
+                                    <i class="bi bi-pencil"></i>
+
+                                    Modifier
+
+                                </a>
+
+
+
+                                <!-- SUPPRIMER -->
+
+                                <a
+                                    href="supprimer_commande.php?id=<?php echo $commande['id_commande']; ?>"
+                                    class="btn btn-danger btn-sm"
+                                    onclick="return confirm('Voulez-vous vraiment supprimer cette commande ?');">
+
+                                    <i class="bi bi-trash"></i>
+
+                                    Supprimer
+
+                                </a>
+
+
+
+                                <!-- LIVRER -->
+
+                                <?php
+
+                                if (
+                                    $statut !==
+                                    "Livrée"
+                                ) {
+
+                                ?>
+
+                                    <a
+                                        href="livrer_commande.php?id=<?php echo $commande['id_commande']; ?>"
+                                        class="btn btn-success btn-sm btn-livree"
+                                        onclick="return confirm('Confirmer que cette commande a été livrée ?');">
+
+                                        <i class="bi bi-check-circle"></i>
+
+                                        Livrée
+
+                                    </a>
+
+                                <?php
+
+                                } else {
+
+                                ?>
+
+                                    <span
+                                        class="badge bg-success mt-1">
+
+                                        ✓ Déjà livrée
+
+                                    </span>
+
+                                <?php
+
+                                }
+
+                                ?>
+
+
+                            </td>
+
+
+                        </tr>
+
+
+                    <?php
+
+                        }
+
+                    } else {
+
+                    ?>
+
+                        <tr>
+
+                            <td
+                                colspan="8"
+                                class="text-center py-4">
+
+                                Aucune commande trouvée.
+
+                            </td>
+
+                        </tr>
+
+                    <?php
+
+                    }
+
+                    ?>
+
+
+                    </body>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+    </div>
 
 </main>
 

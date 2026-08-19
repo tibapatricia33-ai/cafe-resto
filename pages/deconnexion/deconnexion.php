@@ -8,9 +8,9 @@ session_unset();
 session_destroy();
 
 // Retourner vers connexion.php qui se trouve dans le dossier php
-header("Location: ../pages/accueil.php");
+header("Location: ../accueil");
 exit();
-
+?>
 
 
 
