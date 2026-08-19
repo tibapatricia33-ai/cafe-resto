@@ -500,29 +500,38 @@ include "../partials/sidebar.php";
 <main class="main-content">
 
 
-    <div class="topbar">
+   <div class="topbar">
 
-        <span class="menu-icon">
-            ☰
+    <div>
+        <!-- éventuellement ton bouton menu -->
+    </div>
+
+    <div class="topbar-right">
+
+        <span class="notification">
+            🔔
         </span>
 
-        <span class="admin">
-            👤 Administrateur ▾
+        <span class="user">
+            👤 Administrateur
         </span>
 
     </div>
 
+</div>
 
-    <div class="content">
+
+   <div class="content">
+
+    <h2>Gestion des depenses</h2>
+
+    <p id="date"></p>
+
+    <!-- Le reste de ton contenu ici -->
+
+</div>
 
 
-        <!-- TITRE -->
-
-        <div class="d-flex justify-content-between align-items-center mb-4">
-
-            <h2>
-                Gestion des dépenses
-            </h2>
 
 
             <button
@@ -536,7 +545,7 @@ include "../partials/sidebar.php";
 
             </button>
 
-        </div>
+    
 
 
         <!-- MESSAGE -->
@@ -563,42 +572,17 @@ include "../partials/sidebar.php";
              RECHERCHE
              ================================================= -->
 
-        <form
-            method="GET"
-            action="depense.php"
-            class="d-flex gap-2 mb-4">
+       
+       
 
-            <input
-                type="text"
-                name="recherche"
-                class="form-control"
-                placeholder="Rechercher une dépense..."
-                value="<?php echo htmlspecialchars($recherche); ?>">
+    <div class="recherche">
+        <input type="text" placeholder="Rechercher un client, téléphone, commande...">
+        <button>🔍</button>
+    </div>
 
-            <button
-                type="submit"
-                class="btn btn-success">
-
-                <i class="bi bi-search"></i>
-
-                Rechercher
-
-            </button>
-
-
-            <?php if ($recherche !== "") { ?>
-
-                <a
-                    href="depense.php"
-                    class="btn btn-secondary">
-
-                    Réinitialiser
-
-                </a>
-
-            <?php } ?>
-
-        </form>
+</div>
+       
+             
 
 
 
@@ -1374,6 +1358,9 @@ include "../partials/sidebar.php";
 <script
     src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js">
 </script>
+
+
+<script src="../../js/script.js"></script>
 
 
 </body>
