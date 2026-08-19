@@ -1,22 +1,11 @@
 <?php
 
-include "../php/connexion.php";
+include "../../php/connexion.php";
 
 
 // ============================================================
 // CRÉATION AUTOMATIQUE DE LA COLONNE IMPRIMÉ
 // ============================================================
-
-$check = $connexion->query("
-    SHOW COLUMNS FROM commande LIKE 'imprime'
-");
-
-if ($check && $check->num_rows == 0) {
-    $connexion->query("
-        ALTER TABLE commande
-        ADD imprime TINYINT(1) NOT NULL DEFAULT 0
-    ");
-}
 
 
 // ============================================================
@@ -774,7 +763,7 @@ rel="stylesheet"
 href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
 
-<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../../css/style.css">
 
 
 <style>
@@ -974,71 +963,12 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
      MENU VERT
      ======================================================= -->
 
-<aside class="sidebar">
+     <?php
+     
+     include "../../partials/sidebar.php";
 
+     ?>
 
-<div class="logo">
-    ☕ <span>Café Resto</span>
-</div>
-
-
-<nav class="menu">
-
-
-<a href="dashboard.php">
-    🏠 <span>Dashboard</span>
-</a>
-
-
-<a href="produits.php">
-    📦 <span>Produits</span>
-</a>
-
-
-<a href="commandes.php" class="active">
-    📝 <span>Commandes</span>
-</a>
-
-
-<a href="employes.php">
-    👨‍🍳 <span>Employés</span>
-</a>
-
-
-<a href="clients.php">
-    👥 <span>Clients</span>
-</a>
-
-
-<a href="paiements.php">
-    💳 <span>Paiements</span>
-</a>
-
-
-<a href="depense.php">
-    💰 <span>Dépenses</span>
-</a>
-
-
-<a href="factures.php">
-    🧾 <span>Factures</span>
-</a>
-
-
-<a href="rapports.php">
-    📊 <span>Rapports</span>
-</a>
-
-
-</nav>
-
-
-<a href="deconnexion.php" class="logout">
-    🚪 <span>Déconnexion</span>
-</a>
-
-
-</aside>
 
 
 <!-- =======================================================
@@ -1393,9 +1323,7 @@ onchange="calculerTotal()"
 required>
 
 
-<option value="">
-    Choisir un produit
-</option>
+<option value="" disabled selected hidden>Choisir un produit</option>
 
 
 <?php foreach ($produitsDB as $p) { ?>
@@ -1405,8 +1333,7 @@ value="<?= $p['id_produit'] ?>"
 data-prix="<?= $p['prix'] ?>">
 
 <?= e($p['nom']) ?>
--
-<?= number_format($p['prix'], 0, ',', ' ') ?>
+ : <?= number_format($p['prix'], 0, ',', ' ') ?>
 FCFA
 
 </option>

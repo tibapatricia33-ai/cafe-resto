@@ -304,100 +304,11 @@ if (!$resultat) {
 <!-- =====================================================
      MENU ADMINISTRATEUR
      ===================================================== -->
+<?php
 
-<aside class="sidebar">
+     include "../partials/sidebar.php";
 
-
-    <div class="logo">
-
-        ☕ Café Resto
-
-    </div>
-
-
-    <nav class="menu">
-
-
-        <a href="dashboard.php">
-
-            🏠 Dashboard
-
-        </a>
-
-
-        <a href="produits/produits.php">
-
-            📦 Produits
-
-        </a>
-
-
-        <a href="commandes/commandes.php">
-
-            📝 Commandes
-
-        </a>
-
-
-        <a href="employes/employes.php">
-
-            👨‍🍳 Employés
-
-        </a>
-
-
-        <a
-            href="clients/clients.php"
-            class="active">
-
-            👥 Clients
-
-        </a>
-
-
-        <a href="paiements/paiements.php">
-
-            💳 Paiements
-
-        </a>
-
-
-        <a href="depenses/depense.php">
-
-            💰 Dépenses
-
-        </a>
-
-
-        <a href="factures.php">
-
-            🧾 Factures
-
-        </a>
-
-
-        <a href="rapports.php">
-
-            📊 Rapports
-
-        </a>
-
-
-    </nav>
-
-
-    <a
-        href="deconnexion.php"
-        class="logout">
-
-        🚪 Déconnexion
-
-    </a>
-
-
-</aside>
-
-
+?>
 
 <!-- =====================================================
      CONTENU PRINCIPAL
@@ -406,25 +317,36 @@ if (!$resultat) {
 <main class="main-content">
 
 
-    <div class="topbar">
+  <div class="topbar">
 
-        <span class="admin">
+    <div>
+        <!-- éventuellement ton bouton menu -->
+    </div>
 
+    <div class="topbar-right">
+
+        <span class="notification">
+            🔔
+        </span>
+
+        <span class="user">
             👤 Administrateur
-
         </span>
 
     </div>
 
+</div>
 
-    <div class="content">
 
+   <div class="content">
 
-        <h2 class="titre mb-4">
+    <h2>Gestion des clients</h2>
 
-            👥 Gestion des clients
+    <p id="date"></p>
 
-        </h2>
+    <!-- Le reste de ton contenu ici -->
+
+</div>
 
 
         <div class="card">
@@ -799,6 +721,9 @@ if (!$resultat) {
     </div>
 
 </main>
+
+
+<script src="../../js/script.js"></script>
 
 
 </body>

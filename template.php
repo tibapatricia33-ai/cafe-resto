@@ -11,20 +11,11 @@
 <body>
 
     <!-- Menu gauche -->
-    <div class="sidebar">
+  <?php
 
-        <h2>Café Resto</h2>
-
-        <a href="pages/dashboard.php">🏠 Dashboard</a>
-        <a href="pages/produits/produits.php">📦 Produits</a>
-        <a href="pages/commandes/commandes.php">📝 Commandes</a>
-        <a href="pages/employes/employes.php">👨‍🍳 Employés</a>
-        <a href="pages/clients/clients.php">👥 Clients</a>
-        <a href="pages/paiements/paiements.php">💳 Paiements</a>
-        <a href="pages/depenses/depenses.php">💰 Dépenses</a>
-        <a href="pages/rapports.php">📊 Rapports</a>
-
-    </div>
+  include "../../partials/sidebar.php";
+  
+  ?>
 
 
     <!-- Partie principale -->

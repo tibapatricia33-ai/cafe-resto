@@ -103,6 +103,7 @@ $sql = "SELECT *
 
 $dernieresCommandes = $connexion->query($sql);
 
+
 ?>
 
 <!DOCTYPE html>
@@ -146,103 +147,11 @@ $dernieresCommandes = $connexion->query($sql);
      MENU LATERAL
      ===================================================== -->
 
-<aside class="sidebar">
+<?php
 
+include "partials/sidebar.php"
 
-    <!-- LOGO -->
-
-    <div class="logo">
-
-        ☕ <span>Café Resto</span>
-
-    </div>
-
-
-    <!-- MENU -->
-
-    <nav class="menu">
-
-
-        <!-- PAGE ACTIVE -->
-
-        <a href="dashboard.php" class="active">
-
-            🏠 <span>Dashboard</span>
-
-        </a>
-
-
-        <a href="produits/produits.php">
-
-            📦 <span>Produits</span>
-
-        </a>
-
-
-        <a href="commandes/commandes.php">
-
-            📝 <span>Commandes</span>
-
-        </a>
-
-
-        <a href="employes/employes.php">
-
-            👨‍🍳 <span>Employés</span>
-
-        </a>
-
-
-        <a href="clients/clients.php">
-
-            👥 <span>Clients</span>
-
-        </a>
-
-
-        <a href="paiements/paiements.php">
-
-            💳 <span>Paiements</span>
-
-        </a>
-
-
-        <a href="depenses/depense.php">
-
-            💰 <span>Dépenses</span>
-
-        </a>
-
-
-        <a href="factures.php">
-
-            🧾 <span>Factures</span>
-
-        </a>
-
-
-        <a href="rapports.php">
-
-            📊 <span>Rapports</span>
-
-        </a>
-
-
-    </nav>
-
-
-    <!-- DÉCONNEXION -->
-
-    <a href="deconnexion.php" class="logout">
-
-        🚪 <span>Déconnexion</span>
-
-    </a>
-
-
-</aside>
-
-
+?>
 
 <!-- =====================================================
      CONTENU PRINCIPAL

@@ -151,94 +151,10 @@ $totalMobile = $dataMobile['total'];
      MENU LATERAL
      ========================================= -->
 
-<aside class="sidebar">
+<?php
+include "../partials/sidebar.php";
 
-
-    <div class="logo">
-
-        ☕ <span>Café Resto</span>
-
-    </div>
-
-
-    <nav class="menu">
-
-
-        <a href="dashboard.php">
-
-            🏠 <span>Dashboard</span>
-
-        </a>
-
-
-        <a href="produits.php">
-
-            📦 <span>Produits</span>
-
-        </a>
-
-
-        <a href="commandes.php">
-
-            📝 <span>Commandes</span>
-
-        </a>
-
-
-        <a href="employes.php">
-
-            👨‍🍳 <span>Employés</span>
-
-        </a>
-
-
-        <a href="clients.php">
-
-            👥 <span>Clients</span>
-
-        </a>
-
-
-        <a href="paiements.php" class="active">
-
-            💳 <span>Paiements</span>
-
-        </a>
-
-
-        <a href="depenses.php">
-
-            💰 <span>Dépenses</span>
-
-        </a>
-
-
-        <a href="factures.php">
-
-            🧾 <span>Factures</span>
-
-        </a>
-
-
-        <a href="rapports.php">
-
-            📊 <span>Rapports</span>
-
-        </a>
-
-
-    </nav>
-
-
-    <a href="deconnexion.php" class="logout">
-
-        🚪 <span>Déconnexion</span>
-
-    </a>
-
-
-</aside>
-
+?>
 
 
 <!-- =========================================
@@ -668,8 +584,7 @@ $totalMobile = $dataMobile['total'];
 
                                 <i class="bi bi-pencil"></i>
 
-                                Modifier
-
+                                
                             </a>
 
 
@@ -680,7 +595,7 @@ $totalMobile = $dataMobile['total'];
 
                                 <i class="bi bi-trash"></i>
 
-                                Supprimer
+                                
 
                             </a>
 

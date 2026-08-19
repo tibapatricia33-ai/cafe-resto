@@ -34,3 +34,24 @@ boutonsSupprimer.forEach(function(bouton) {
     });
 
 });
+function afficherDate() {
+
+    const dateElement = document.getElementById("date");
+
+    if (dateElement) {
+
+        const aujourdHui = new Date();
+
+        const options = {
+            weekday: "long",
+            day: "numeric",
+            month: "long",
+            year: "numeric"
+        };
+
+        dateElement.textContent =
+            aujourdHui.toLocaleDateString("fr-FR", options);
+    }
+}
+
+afficherDate();

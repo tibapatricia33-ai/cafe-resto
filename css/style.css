@@ -375,3 +375,237 @@ form input{
 .logout:hover {
     background: rgba(255, 255, 255, 0.15);
 }
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 25px;
+    background: white;
+}
+
+.topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+#date {
+    font-size: 15px;
+    color: #555;
+}
+
+.notification {
+    position: relative;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.notification .badge {
+    position: absolute;
+    top: -8px;
+    right: -10px;
+    background: red;
+    color: white;
+    border-radius: 50%;
+    font-size: 11px;
+    min-width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.commande-total {
+
+    background: #f1f8f4;
+
+    border: 2px solid #008f4c;
+
+    border-radius: 8px;
+
+    padding: 20px;
+
+    margin-top: 20px;
+
+}
+
+
+.commande-total h4 {
+
+    color: #008f4c;
+
+    font-weight: bold;
+
+}
+
+
+.table th {
+
+    background: #f8f9fa;
+
+}
+
+
+.produit-nom {
+
+    font-weight: 600;
+
+}
+
+
+.prix-total {
+
+    color: #008f4c;
+
+    font-weight: bold;
+
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f7f7f7;
+    color: #333;
+}
+
+.navbar {
+    height: 65px;
+    background: #008f4c;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 8%;
+    color: white;
+}
+
+.logo {
+    font-size: 23px;
+    font-weight: bold;
+}
+
+.container {
+    width: 75%;
+    margin: 30px auto;
+}
+
+.welcome {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.welcome h1 {
+    color: #26734d;
+    font-size: 25px;
+    margin-bottom: 8px;
+}
+
+.welcome p {
+    color: #999;
+    font-size: 13px;
+}
+
+.search {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 50px;
+}
+
+.search input {
+    width: 350px;
+    padding: 13px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    outline: none;
+}
+
+.search button {
+    margin-left: 5px;
+    padding: 13px 18px;
+    border: none;
+    border-radius: 6px;
+    background: #008f4c;
+    color: white;
+    cursor: pointer;
+}
+
+.products-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.products {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.product {
+    width: 190px;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.product-image {
+    height: 130px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #fafafa;
+}
+
+.emoji-image {
+    font-size: 50px;
+}
+
+.product-info {
+    padding: 12px;
+}
+
+.product-info h3 {
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.price {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.stock {
+    color: #888;
+    font-size: 12px;
+    margin-bottom: 10px;
+}
+
+.btn-panier {
+    display: block;
+    width: 100%;
+    padding: 9px;
+    border: none;
+    border-radius: 5px;
+    background: #008f4c;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    font-size: 12px;
+}
+
+.mon-panier {
+    position: fixed;
+    right: 25px;
+    bottom: 20px;
+    background: #008f4c;
+    color: white;
+    padding: 12px 18px;
+    border-radius: 25px;
+    text-decoration: none;
+}
+

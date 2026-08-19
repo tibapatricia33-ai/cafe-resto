@@ -245,39 +245,66 @@ $depensesMois = $data["total"];
 </head>
 <body>
 
-<aside class="sidebar">
-    <div class="logo">
-        ☕ <span>Café Resto</span>
-    </div>
-    <nav class="menu">
-        <a href="dashboard.php">🏠 <span>Dashboard</span></a>
-        <a href="produits/produits.php">📦 <span>Produits</span></a>
-        <a href="commandes/commandes.php">📝 <span>Commandes</span></a>
-        <a href="employes/employes.php">👨‍🍳 <span>Employés</span></a>
-        <a href="clients/clients.php">👥 <span>Clients</span></a>
-        <a href="paiements/paiements.php">💳 <span>Paiements</span></a>
-        <a href="depenses/depense.php" class="active">💰 <span>Dépenses</span></a>
-        <a href="factures.php">🧾 <span>Factures</span></a>
-        <a href="rapports.php">📊 <span>Rapports</span></a>
-    </nav>
-    <a href="deconnexion.php" class="logout">🚪 <span>Déconnexion</span></a>
-</aside>
+
+<!-- =====================================================
+     MENU
+     ===================================================== -->
+
+<?php
+
+include "../partials/sidebar.php";
+
+?>
 
 <main class="main-content">
 
-    <div class="topbar">
-        <span class="menu-icon">☰</span>
-        <span class="admin">👤 Administrateur ▾</span>
+
+   <div class="topbar">
+
+    <div>
+        <!-- éventuellement ton bouton menu -->
     </div>
 
-    <div class="content">
+    <div class="topbar-right">
 
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2>Gestion des dépenses</h2>
-            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#ajoutModal">
-                <i class="bi bi-plus-circle"></i> Ajouter une dépense
+        <span class="notification">
+            🔔
+        </span>
+
+        <span class="user">
+            👤 Administrateur
+        </span>
+
+    </div>
+
+</div>
+
+
+   <div class="content">
+
+    <h2>Gestion des depenses</h2>
+
+    <p id="date"></p>
+
+    <!-- Le reste de ton contenu ici -->
+
+</div>
+
+
+
+
+            <button
+                class="btn btn-success"
+                data-bs-toggle="modal"
+                data-bs-target="#ajoutModal">
+
+                <i class="bi bi-plus-circle"></i>
+
+                Ajouter une dépense
+
             </button>
-        </div>
+
+    
 
         <?php if ($message !== "") { ?>
             <div class="alert alert-<?php echo $typeMessage; ?> alert-dismissible fade show">
@@ -286,13 +313,22 @@ $depensesMois = $data["total"];
             </div>
         <?php } ?>
 
-        <form method="GET" action="depense.php" class="d-flex gap-2 mb-4">
-            <input type="text" name="recherche" class="form-control" placeholder="Rechercher une dépense..." value="<?php echo htmlspecialchars($recherche); ?>">
-            <button type="submit" class="btn btn-success"><i class="bi bi-search"></i> Rechercher</button>
-            <?php if ($recherche !== "") { ?>
-                <a href="depense.php" class="btn btn-secondary">Réinitialiser</a>
-            <?php } ?>
-        </form>
+
+        <!-- =================================================
+             RECHERCHE
+             ================================================= -->
+
+       
+       
+
+    <div class="recherche">
+        <input type="text" placeholder="Rechercher un client, téléphone, commande...">
+        <button>🔍</button>
+    </div>
+
+</div>
+       
+             
 
         <div class="row mb-4">
             <div class="col-md-4 mb-3">
@@ -495,6 +531,14 @@ $depensesMois = $data["total"];
 </div>
 <?php } ?>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js">
+</script>
+
+
+<script src="../../js/script.js"></script>
+
+
 </body>
 </html>

@@ -9,57 +9,9 @@
 
 <body>
 
-<aside class="sidebar">
-
-    <div class="logo">
-        ☕ <span>Café Resto</span>
-    </div>
-
-    <nav class="menu">
-
-        <a href="dashboard.php">
-            🏠 <span>Dashboard</span>
-        </a>
-
-        <a href="produits.php">
-            📦 <span>Produits</span>
-        </a>
-
-        <a href="commandes.php">
-            🛒 <span>Commandes</span>
-        </a>
-
-        <a href="employes.php" class="active">
-            👥 <span>Employés</span>
-        </a>
-
-        <a href="clients.php">
-            👤 <span>Clients</span>
-        </a>
-
-        <a href="paiements.php">
-            💳 <span>Paiements</span>
-        </a>
-
-        <a href="depenses.php">
-            💰 <span>Dépenses</span>
-        </a>
-
-        <a href="factures.php">
-            📄 <span>Factures</span>
-        </a>
-
-        <a href="rapports.php">
-            📊 <span>Rapports</span>
-        </a>
-
-    </nav>
-
-    <a href="deconnexion.php" class="logout">
-        🚪 <span>Déconnexion</span>
-    </a>
-
-</aside>
+<?php
+include(__DIR__ . "/../partials/sidebar.php");
+?>
 
 
 <div class="main">
@@ -71,7 +23,7 @@
 
     <div class="content">
 
-        <form action="ajouter_produit.php" method="POST">
+        <form action="../../php/ajouter_produit.php" method="POST">
 
             <label>Nom du produit :</label>
             <input type="text" name="nom" >
@@ -89,11 +41,7 @@
             <input type="number" name="seuil_alert" >
 
 
-            <a href="../../php/ajouter_produit.php">
-    <button class="btn-ajouter">
-        + Ajouter un produit
-    </button>
-</a>
+            <button type="submit" class="btn-ajouter">+ Ajouter un produit</button>
 
         </form>
 
