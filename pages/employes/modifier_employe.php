@@ -22,7 +22,8 @@ $employe = $resultat->fetch_assoc();
 
     <title>Modifier un employé - Café Resto</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" href="../../css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+     rel="stylesheet" href="/../../css/style.css">
 </head>
 
 <body>
@@ -30,7 +31,8 @@ $employe = $resultat->fetch_assoc();
 
 <?php
 
-include "../../partials/sidebar.php";
+
+include(__DIR__ . "/../partials/sidebar.php");
 
 ?>
 

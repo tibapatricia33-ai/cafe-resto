@@ -1746,13 +1746,6 @@ title="Facture imprimée">
                         </tr>
 
 
-                    <?php
-
-                        }
-
-                    } else {
-
-                    ?>
 
                         <tr>
 
@@ -1766,11 +1759,7 @@ title="Facture imprimée">
 
                         </tr>
 
-                    <?php
-
-                    }
-
-                    ?>
+            
 
 
                     </body>

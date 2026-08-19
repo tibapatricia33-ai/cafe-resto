@@ -584,8 +584,7 @@ include "../partials/sidebar.php";
 
                                 <i class="bi bi-pencil"></i>
 
-                                Modifier
-
+                                
                             </a>
 
 
@@ -596,7 +595,7 @@ include "../partials/sidebar.php";
 
                                 <i class="bi bi-trash"></i>
 
-                                Supprimer
+                                
 
                             </a>
 

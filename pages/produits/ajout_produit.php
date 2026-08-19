@@ -10,9 +10,7 @@
 <body>
 
 <?php
-
-include "../../partials/sidebar.php";
-
+include(__DIR__ . "/../partials/sidebar.php");
 ?>
 
 
@@ -25,7 +23,7 @@ include "../../partials/sidebar.php";
 
     <div class="content">
 
-        <form action="ajouter_produit.php" method="POST">
+        <form action="../../php/ajouter_produit.php" method="POST">
 
             <label>Nom du produit :</label>
             <input type="text" name="nom" >
@@ -43,11 +41,7 @@ include "../../partials/sidebar.php";
             <input type="number" name="seuil_alert" >
 
 
-            <a href="../../php/ajouter_produit.php">
-    <button class="btn-ajouter">
-        + Ajouter un produit
-    </button>
-</a>
+            <button type="submit" class="btn-ajouter">+ Ajouter un produit</button>
 
         </form>
 

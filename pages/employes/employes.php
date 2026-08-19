@@ -49,56 +49,98 @@ if (isset($_GET['recherche']) && !empty($_GET['recherche'])) {
 <body>
 
     <!-- MENU LATERAL -->
-   
+
            <?php
 
-           include "../../partials/sidebar.php";
+include(__DIR__ . "/../partials/sidebar.php");
 
-           ?>
+?>
+
+           
 
 
     <!-- CONTENU PRINCIPAL -->
-    <main class="main-content">
-
-        <div class="topbar">
-            <span class="menu-icon">☰</span>
-
-            <span class="admin">
-                👤 Admin ▾
-            </span>
-        </div>
+ <main class="main-content">
 
 
-        <div class="content">
+<!-- TOPBAR -->
 
-            <div class="d-flex justify-content-between align-items-center mb-4">
-
-                <h2>Gestion des employés</h2>
-
-                <a href="/employes/ajouter_employe.php" class="btn btn-success">
-                    + Ajouter un employé
-                </a>
-
-            </div>
+<div class="topbar">
 
 
-            <!-- RECHERCHE -->
+<span class="menu-icon">
+    ☰
+</span>
 
-            <form method="GET" class="search-form mb-4">
 
-                <input
-                    type="text"
-                    name="recherche"
-                    class="form-control"
-                    placeholder="Rechercher un employé..."
-                    value="<?php echo isset($_GET['recherche']) ? $_GET['recherche'] : ''; ?>"
-                >
+<div class="d-flex align-items-center">
 
-                <button type="submit" class="btn btn-success">
-                    🔍 Rechercher
-                </button>
 
-            </form>
+<a href="commandes.php"
+   class="notification"
+   title="Notifications">
+
+    <i class="bi bi-bell-fill"></i>
+
+    <?php if (isset($_GET['nouvelle'])) { ?>
+
+        <span class="notification-badge">
+            1
+        </span>
+
+    <?php } ?>
+
+</a>
+
+
+<span class="admin">
+    👤 Administrateur
+</span>
+
+
+</div>
+
+
+</div>
+
+
+<!-- CONTENU -->
+
+<div class="content">
+
+
+<!-- =======================================================
+     TITRE
+     ======================================================= -->
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+
+<div>
+
+<h2>
+    Gestion des employes
+</h2>
+
+
+
+</div>
+
+
+<a href="employes.php?ajouter=1"
+   class="btn btn-success">
+
+    <i class="bi bi-plus-circle"></i>
+
+    Ajouter une employe
+
+</a>
+
+
+</div>
+
+
+ 
 
 
             <!-- TABLEAU -->
@@ -144,14 +186,14 @@ if (isset($_GET['recherche']) && !empty($_GET['recherche'])) {
                                 <a
                                     href="modifier_employe.php?id=<?php echo $employe['id_employe']; ?>"
                                     class="btn btn-primary btn-sm">
-                                    ✏️ Modifier
+                                    ✏️ 
                                 </a>
 
                                 <a
                                     href="supprimer_employe.php?id=<?php echo $employe['id_employe']; ?>"
                                     class="btn btn-danger btn-sm"
                                     onclick="return confirm('Voulez-vous vraiment supprimer cet employé ?');">
-                                    🗑️ Supprimer
+                                    🗑️ 
                                 </a>
 
                             </td>
@@ -178,6 +220,8 @@ if (isset($_GET['recherche']) && !empty($_GET['recherche'])) {
         </div>
 
     </main>
+
+<script src="../../js/script.js"></script>
 
 </body>
 

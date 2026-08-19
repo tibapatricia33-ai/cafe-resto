@@ -1,3 +1,6 @@
+<?php 
+include('constant.php');
+?>
 
 <aside class="sidebar">
 
@@ -12,28 +15,28 @@
     <nav class="menu">
 
 
-        <a href="dashboard.php">
+        <a href="<?php echo $_ROOT; ?>/dashboard.php">
 
             🏠 Dashboard
 
         </a>
 
 
-        <a href="/cafe-resto/produits/produits.php">
+        <a href="<?php echo $_ROOT; ?>/produits/produits.php">
 
             📦 Produits
 
         </a>
 
 
-        <a href="commandes/commandes.php">
+        <a href="<?php echo $_ROOT; ?>/commandes/commandes.php">
 
             📝 Commandes
 
         </a>
 
 
-        <a href="employes/employes.php">
+        <a href="<?php echo $_ROOT; ?>/employes/employes.php">
 
             👨‍🍳 Employés
 
@@ -41,7 +44,7 @@
 
 
         <a
-            href="clients/clients.php"
+            href="<?php echo $_ROOT; ?>/clients/clients.php"
             class="active">
 
             👥 Clients
@@ -49,28 +52,28 @@
         </a>
 
 
-        <a href="paiements/paiements.php">
+        <a href="<?php echo $_ROOT; ?>/paiements/paiements.php">
 
             💳 Paiements
 
         </a>
 
 
-        <a href="depenses/depense.php">
+        <a href="<?php echo $_ROOT; ?>/depenses/depense.php">
 
             💰 Dépenses
 
         </a>
 
 
-        <a href="factures.php">
+        <a href="<?php echo $_ROOT; ?>/factures.php">
 
             🧾 Factures
 
         </a>
 
 
-        <a href="rapports.php">
+        <a href="<?php echo $_ROOT; ?>/rapports.php">
 
             📊 Rapports
 
@@ -81,7 +84,7 @@
 
 
     <a
-        href="deconnexion.php"
+        href="<?php echo $_ROOT; ?>/deconnexion/deconnexion.php"
         class="logout">
 
         🚪 Déconnexion
