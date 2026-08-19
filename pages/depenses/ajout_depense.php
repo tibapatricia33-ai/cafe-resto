@@ -247,7 +247,7 @@
 
 
                 <a
-                    href="/depenses/depenses.php"
+                    href="/depenses/depense.php"
                     class="btn btn-secondary">
 
                     Annuler
