@@ -103,6 +103,7 @@ $sql = "SELECT *
 
 $dernieresCommandes = $connexion->query($sql);
 
+
 ?>
 
 <!DOCTYPE html>

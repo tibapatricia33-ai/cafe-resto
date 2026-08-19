@@ -1323,9 +1323,7 @@ onchange="calculerTotal()"
 required>
 
 
-<option value="">
-    Choisir un produit
-</option>
+<option value="" disabled selected hidden>Choisir un produit</option>
 
 
 <?php foreach ($produitsDB as $p) { ?>
@@ -1335,8 +1333,7 @@ value="<?= $p['id_produit'] ?>"
 data-prix="<?= $p['prix'] ?>">
 
 <?= e($p['nom']) ?>
--
-<?= number_format($p['prix'], 0, ',', ' ') ?>
+ : <?= number_format($p['prix'], 0, ',', ' ') ?>
 FCFA
 
 </option>

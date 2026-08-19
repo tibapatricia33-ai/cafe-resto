@@ -123,6 +123,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'
 
     $nomClient = trim($_POST['nom_client'] ?? '');
     $telephone = trim($_POST['telephone'] ?? '');
+
+// Contrôle de sécurité côté serveur
+if (!preg_match('/^(\+237)?[26][0-9]{8}$/', $telephone)) {
+    $_SESSION['erreur'] = "Numéro de téléphone invalide.";
+    header('Location: commandes.php');
+    exit;
+}
     $adresse = trim($_POST['adresse'] ?? '');
 
     $type = $_POST['type'] ?? 'Sur place';
@@ -750,6 +757,7 @@ $dateComplete =
 
 ?>
 
+
 <!DOCTYPE html>
 
 <html lang="fr">
@@ -1055,14 +1063,16 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
 </div>
 
 
-<a href="commandes.php?ajouter=1"
-   class="btn btn-success">
+<button type="button" 
+        class="btn btn-success" 
+        data-bs-toggle="modal" 
+        data-bs-target="#modalCommande">
 
     <i class="bi bi-plus-circle"></i>
 
     Ajouter une commande
 
-</a>
+</button>
 
 
 </div>
@@ -1140,319 +1150,123 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
 
 </div>
 
-
 <!-- =======================================================
-     FORMULAIRE AJOUT / MODIFICATION
+     BOÎTE DE DIALOGUE (MODALE) & FORMULAIRE
      ======================================================= -->
+<div class="modal fade" id="modalCommande" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      
+      <div class="modal-header bg-success text-white">
+        <h5 class="modal-title">
+          <?= $commandeModification ? "Modifier la commande" : "Nouvelle commande" ?>
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
 
-<?php if (isset($_GET['ajouter']) || $commandeModification) { ?>
+      <form method="POST">
+        <div class="modal-body">
 
+          <?php if ($commandeModification) { ?>
+            <input type="hidden" name="action" value="modifier">
+            <input type="hidden" name="id_commande" value="<?= $commandeModification['id_commande'] ?>">
+          <?php } else { ?>
+            <input type="hidden" name="action" value="ajouter">
+          <?php } ?>
 
-<div class="order-form">
+          <!-- CLIENT -->
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Nom du client</label>
+              <input type="text" name="nom_client" class="form-control" required value="<?= e($commandeModification['nom_client'] ?? '') ?>">
+            </div>
 
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Téléphone</label>
+              <input type="tel" 
+       name="telephone" 
+       class="form-control" 
+       required 
+       pattern="^(\+237)?[26][0-9]{8}$" 
+       title="Format attendu : 6XXXXXXXX, 2XXXXXXXX ou +2376XXXXXXXX"
+       placeholder="+2376XXXXXXXX"
+       oninput="this.value = this.value.replace(/[^0-9+]/g, '')"
+       value="<?= e($commandeModification['telephone'] ?? '') ?>">
+            </div>
 
-<div class="d-flex justify-content-between align-items-center mb-4">
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Adresse</label>
+              <input type="text" name="adresse" class="form-control" value="<?= e($commandeModification['adresse'] ?? '') ?>">
+            </div>
+          </div>
 
-<h4>
+          <!-- TYPE -->
+          <div class="mb-3">
+            <label class="form-label">Type de commande</label>
+            <select name="type" class="form-select" required>
+              <option value="Sur place" <?= (($commandeModification['type'] ?? '') === 'Sur place') ? 'selected' : '' ?>>Sur place</option>
+              <option value="À emporter" <?= (($commandeModification['type'] ?? '') === 'À emporter') ? 'selected' : '' ?>>À emporter</option>
+              <option value="Livraison" <?= (($commandeModification['type'] ?? '') === 'Livraison') ? 'selected' : '' ?>>Livraison</option>
+            </select>
+          </div>
 
-<?php
+          <!-- PRODUITS -->
+          <h5 class="mt-4 mb-3">🍽️ Produits commandés</h5>
 
-if ($commandeModification) {
-    echo "Modifier la commande";
-} else {
-    echo "Nouvelle commande";
-}
+          <div id="produits-container">
+            <div class="product-line row mb-2">
+              <div class="col-md-7">
+                <label>Produit</label>
+                <select name="produit[]" class="form-select produit-select" onchange="calculerTotal()" required>
+                  <option value="" disabled selected hidden>Choisir un produit</option>
+                  <?php foreach ($produitsDB as $p) { ?>
+                    <option value="<?= $p['id_produit'] ?>" data-prix="<?= $p['prix'] ?>">
+                      <?= e($p['nom']) ?> : <?= number_format($p['prix'], 0, ',', ' ') ?> FCFA
+                    </option>
+                  <?php } ?>
+                </select>
+              </div>
 
-?>
+              <div class="col-md-3">
+                <label>Quantité</label>
+                <input type="number" name="quantite[]" class="form-control quantite" min="1" value="1" oninput="calculerTotal()" required>
+              </div>
 
-</h4>
+              <div class="col-md-2 d-flex align-items-end">
+                <button type="button" class="btn btn-danger w-100" onclick="supprimerLigne(this)">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+            </div>
+          </div>
 
+          <button type="button" class="btn btn-outline-success mb-4 mt-2" onclick="ajouterProduit()">
+            <i class="bi bi-plus"></i> Ajouter un produit
+          </button>
 
-<a href="commandes.php"
-   class="btn btn-secondary">
+          <!-- TOTAL -->
+          <div class="total-box mb-3">
+            Total : <span id="total">0</span> FCFA
+          </div>
 
-    <i class="bi bi-x"></i>
+        </div>
 
-</a>
+        <div class="modal-footer">
+          <?php if ($commandeModification) : ?>
+  <a href="commandes.php" class="btn btn-secondary">Annuler</a>
+<?php else : ?>
+  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+<?php endif; ?>
+          <button type="submit" class="btn btn-success">
+            <i class="bi bi-check-circle"></i>
+            <?= $commandeModification ? "Enregistrer les modifications" : "Enregistrer la commande" ?>
+          </button>
+        </div>
+      </form>
 
-
+    </div>
+  </div>
 </div>
-
-
-<form method="POST">
-
-
-<?php if ($commandeModification) { ?>
-
-<input
-type="hidden"
-name="action"
-value="modifier">
-
-
-<input
-type="hidden"
-name="id_commande"
-value="<?= $commandeModification['id_commande'] ?>">
-
-<?php } else { ?>
-
-<input
-type="hidden"
-name="action"
-value="ajouter">
-
-<?php } ?>
-
-
-<!-- CLIENT -->
-
-<div class="row">
-
-
-<div class="col-md-4 mb-3">
-
-<label class="form-label">
-    Nom du client
-</label>
-
-<input
-type="text"
-name="nom_client"
-class="form-control"
-required
-value="<?= e($commandeModification['nom_client'] ?? '') ?>">
-
-</div>
-
-
-<div class="col-md-4 mb-3">
-
-<label class="form-label">
-    Téléphone
-</label>
-
-<input
-type="text"
-name="telephone"
-class="form-control"
-required
-value="<?= e($commandeModification['telephone'] ?? '') ?>">
-
-</div>
-
-
-<div class="col-md-4 mb-3">
-
-<label class="form-label">
-    Adresse
-</label>
-
-<input
-type="text"
-name="adresse"
-class="form-control"
-value="<?= e($commandeModification['adresse'] ?? '') ?>">
-
-</div>
-
-
-</div>
-
-
-<!-- TYPE -->
-
-<div class="mb-3">
-
-<label class="form-label">
-    Type de commande
-</label>
-
-
-<select
-name="type"
-class="form-select"
-required>
-
-
-<option value="Sur place"
-<?php
-if (($commandeModification['type'] ?? '') === 'Sur place')
-    echo 'selected';
-?>>
-    Sur place
-</option>
-
-
-<option value="À emporter"
-<?php
-if (($commandeModification['type'] ?? '') === 'À emporter')
-    echo 'selected';
-?>>
-    À emporter
-</option>
-
-
-<option value="Livraison"
-<?php
-if (($commandeModification['type'] ?? '') === 'Livraison')
-    echo 'selected';
-?>>
-    Livraison
-</option>
-
-
-</select>
-
-</div>
-
-
-<!-- PRODUITS -->
-
-<h5 class="mt-4 mb-3">
-    🍽️ Produits commandés
-</h5>
-
-
-<div id="produits-container">
-
-
-<div class="product-line row">
-
-
-<div class="col-md-7">
-
-<label>
-    Produit
-</label>
-
-
-<select
-name="produit[]"
-class="form-select produit-select"
-onchange="calculerTotal()"
-required>
-
-
-<option value="">
-    Choisir un produit
-</option>
-
-
-<?php foreach ($produitsDB as $p) { ?>
-
-<option
-value="<?= $p['id_produit'] ?>"
-data-prix="<?= $p['prix'] ?>">
-
-<?= e($p['nom']) ?>
--
-<?= number_format($p['prix'], 0, ',', ' ') ?>
-FCFA
-
-</option>
-
-<?php } ?>
-
-
-</select>
-
-</div>
-
-
-<div class="col-md-3">
-
-<label>
-    Quantité
-</label>
-
-
-<input
-type="number"
-name="quantite[]"
-class="form-control quantite"
-min="1"
-value="1"
-oninput="calculerTotal()"
-required>
-
-</div>
-
-
-<div class="col-md-2 d-flex align-items-end">
-
-<button
-type="button"
-class="btn btn-danger w-100"
-onclick="supprimerLigne(this)">
-
-<i class="bi bi-trash"></i>
-
-</button>
-
-</div>
-
-
-</div>
-
-
-</div>
-
-
-<button
-type="button"
-class="btn btn-outline-success mb-4"
-onclick="ajouterProduit()">
-
-<i class="bi bi-plus"></i>
-
-Ajouter un produit
-
-</button>
-
-
-<!-- TOTAL -->
-
-<div class="total-box mb-4">
-
-Total :
-
-<span id="total">
-0
-</span>
-
-FCFA
-
-</div>
-
-
-<button
-type="submit"
-class="btn btn-success">
-
-<i class="bi bi-check-circle"></i>
-
-
-<?php
-
-if ($commandeModification) {
-    echo "Enregistrer les modifications";
-} else {
-    echo "Enregistrer la commande";
-}
-
-?>
-
-</button>
-
-
-</form>
-
-
-</div>
-
-
-<?php } ?>
 
 
 <!-- =======================================================
@@ -1781,6 +1595,183 @@ title="Facture imprimée">
 
 </div>
 
+                            <td>
+
+                                <?php
+
+                                $statut =
+                                    $commande['statut']
+                                    ?? '';
+
+                                if (
+                                    $statut ===
+                                    "En attente"
+                                ) {
+
+                                ?>
+
+                                    <span
+                                        class="badge bg-warning text-dark">
+
+                                        🟠 En attente
+
+                                    </span>
+
+                                <?php
+
+                                } elseif (
+                                    $statut ===
+                                    "Livrée"
+                                ) {
+
+                                ?>
+
+                                    <span
+                                        class="badge bg-success">
+
+                                        🟢 Livrée
+
+                                    </span>
+
+                                <?php
+
+                                } else {
+
+                                ?>
+
+                                    <span
+                                        class="badge bg-secondary">
+
+                                        <?php
+
+                                        echo htmlspecialchars(
+                                            $statut
+                                        );
+
+                                        ?>
+
+                                    </span>
+
+                                <?php
+
+                                }
+
+                                ?>
+
+                            </td>
+
+
+
+                            <!-- =========================
+                                 ACTIONS
+                                 ========================= -->
+
+                            <td>
+
+
+                                <!-- MODIFIER -->
+
+                                <a
+                                    href="modifier_commande.php?id=<?php echo $commande['id_commande']; ?>"
+                                    class="btn btn-primary btn-sm">
+
+                                    <i class="bi bi-pencil"></i>
+
+                                    Modifier
+
+                                </a>
+
+
+
+                                <!-- SUPPRIMER -->
+
+                                <a
+                                    href="supprimer_commande.php?id=<?php echo $commande['id_commande']; ?>"
+                                    class="btn btn-danger btn-sm"
+                                    onclick="return confirm('Voulez-vous vraiment supprimer cette commande ?');">
+
+                                    <i class="bi bi-trash"></i>
+
+                                    Supprimer
+
+                                </a>
+
+
+
+                                <!-- LIVRER -->
+
+                                <?php
+
+                                if (
+                                    $statut !==
+                                    "Livrée"
+                                ) {
+
+                                ?>
+
+                                    <a
+                                        href="livrer_commande.php?id=<?php echo $commande['id_commande']; ?>"
+                                        class="btn btn-success btn-sm btn-livree"
+                                        onclick="return confirm('Confirmer que cette commande a été livrée ?');">
+
+                                        <i class="bi bi-check-circle"></i>
+
+                                        Livrée
+
+                                    </a>
+
+                                <?php
+
+                                } else {
+
+                                ?>
+
+                                    <span
+                                        class="badge bg-success mt-1">
+
+                                        ✓ Déjà livrée
+
+                                    </span>
+
+                                <?php
+
+                                }
+
+                                ?>
+
+
+                            </td>
+
+
+                        </tr>
+
+
+
+                        <tr>
+
+                            <td
+                                colspan="8"
+                                class="text-center py-4">
+
+                                Aucune commande trouvée.
+
+                            </td>
+
+                        </tr>
+
+            
+
+
+                    </body>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+    </div>
 
 </main>
 
@@ -1925,6 +1916,25 @@ document.addEventListener(
 
 </script>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<?php if ($commandeModification) : ?>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    var modalElement = document.getElementById('modalCommande');
+    var modal = new bootstrap.Modal(modalElement);
+    
+    // Ouvre la modale et calcule le total
+    modal.show();
+    calculerTotal();
+
+    // Redirige vers la page propre dès que la modale se ferme
+    modalElement.addEventListener('hidden.bs.modal', function () {
+        window.location.href = 'commandes.php';
+    });
+});
+</script>
+<?php endif; ?>
 
 </body>
 
