@@ -15,7 +15,7 @@ include('constant.php');
     <nav class="menu">
 
 
-        <a href="dashboard.php">
+        <a href="<?php echo $_ROOT; ?>/dashboard.php">
 
             🏠 Dashboard
 

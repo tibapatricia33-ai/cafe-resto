@@ -186,14 +186,14 @@ include(__DIR__ . "/../partials/sidebar.php");
                                 <a
                                     href="modifier_employe.php?id=<?php echo $employe['id_employe']; ?>"
                                     class="btn btn-primary btn-sm">
-                                    ✏️ Modifier
+                                    ✏️ 
                                 </a>
 
                                 <a
                                     href="supprimer_employe.php?id=<?php echo $employe['id_employe']; ?>"
                                     class="btn btn-danger btn-sm"
                                     onclick="return confirm('Voulez-vous vraiment supprimer cet employé ?');">
-                                    🗑️ Supprimer
+                                    🗑️ 
                                 </a>
 
                             </td>
