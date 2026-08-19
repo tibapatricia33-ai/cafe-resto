@@ -2,7 +2,7 @@
 
 session_start();
 
-include "../php/connexion.php";
+include "../../php/connexion.php";
 
 /* =====================================================
    INITIALISATION DU PANIER

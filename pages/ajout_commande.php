@@ -4,6 +4,7 @@ session_start();
 
 include "../php/connexion.php";
 
+
 /*
 =====================================================
 INITIALISATION DU PANIER
@@ -36,18 +37,21 @@ foreach ($_SESSION['panier'] as $article) {
         continue;
     }
 
+
     $idProduit = (int)$article['id_produit'];
 
     $quantite = isset($article['quantite'])
         ? (int)$article['quantite']
         : 1;
 
+
     if ($quantite < 1) {
         $quantite = 1;
     }
 
+
     /*
-    Si le produit existe déjà,
+    Si le produit existe déjà dans le panier,
     on additionne les quantités.
     */
 
@@ -93,6 +97,7 @@ foreach ($panier as $article) {
 
     $sousTotal = $prix * $quantite;
 
+
     $total += $sousTotal;
 
     $quantiteTotale += $quantite;
@@ -101,13 +106,12 @@ foreach ($panier as $article) {
     if ($quantite > 1) {
 
         $detailsCommande[] =
-            $article['nom'] . ' *' . $quantite;
+            $article['nom'] . ' x' . $quantite;
 
     } else {
 
         $detailsCommande[] =
             $article['nom'];
-
     }
 }
 
@@ -128,7 +132,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
     /*
-    Vérifier que le panier n'est pas vide
+    =================================================
+    VÉRIFIER QUE LE PANIER N'EST PAS VIDE
+    =================================================
     */
 
     if (empty($panier)) {
@@ -144,17 +150,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     =================================================
     */
 
-    $nom = trim($_POST['nom_client'] ?? '');
+    $nom = trim(
+        $_POST['nom_client'] ?? ''
+    );
 
-    $numero = trim($_POST['numero'] ?? '');
 
-    $email = trim($_POST['email'] ?? '');
+    $numero = trim(
+        $_POST['numero'] ?? ''
+    );
 
-    $type = trim($_POST['type'] ?? '');
 
-    $statut = trim($_POST['statut'] ?? '');
+    $email = trim(
+        $_POST['email'] ?? ''
+    );
 
-    $date = $_POST['date'] ?? date('Y-m-d');
+
+    $type = trim(
+        $_POST['type'] ?? ''
+    );
+
+
+    $statut = trim(
+        $_POST['statut'] ?? ''
+    );
+
+
+    $date = $_POST['date']
+        ?? date('Y-m-d');
 
 
     /*
@@ -165,208 +187,436 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($nom === '') {
 
-        die("Le nom du client est obligatoire.");
+        die(
+            "Le nom du client est obligatoire."
+        );
 
     }
+
 
     if ($type === '') {
 
-        die("Le type de commande est obligatoire.");
+        die(
+            "Le type de commande est obligatoire."
+        );
 
     }
+
 
     if ($statut === '') {
 
-        die("Le statut de la commande est obligatoire.");
-
-    }
-
-
-    /*
-    =================================================
-    INSERTION DU CLIENT
-    =================================================
-    */
-
-    $sqlClient = "
-        INSERT INTO client
-        (
-            nom,
-            telephone,
-            email,
-
-        )
-        VALUES
-        (
-            ?,
-            ?,
-            ?,
-            ?
-        )
-    ";
-
-
-    $stmtClient = mysqli_prepare(
-        $connexion,
-        $sqlClient,
-    );
-
-
-    if (!$stmtClient) {
-
         die(
-            "Erreur préparation client : "
-            . mysqli_error($connexion)
+            "Le statut de la commande est obligatoire."
         );
 
     }
 
 
-    mysqli_stmt_bind_param(
-        $stmtClient,
-        "sss",
-        $nom,
-        $numero,
-        $email
-        
-    );
+    if ($date === '') {
 
-
-    /*
-    Exécuter l'insertion du client
-    */
-
-    if (!mysqli_stmt_execute($stmtClient)) {
-
-        die(
-            "Erreur enregistrement client : "
-            . mysqli_stmt_error($stmtClient)
-        );
-
-    }
-
-
-    /*
-    Récupérer l'ID du client
-    */
-
-    $idClient = mysqli_insert_id($connexion);
-
-
-    mysqli_stmt_close($stmtClient);
-
-
-    /*
-    =================================================
-    INSERTION DE LA COMMANDE
-    =================================================
-    */
-
-    $sqlCommande = "
-        INSERT INTO commande
-        (
-            id_client,
-            type,
-            statut,
-            date,
-            quantite,
-            montant,
-            details
-        )
-        VALUES
-        (
-            ?,
-            ?,
-            ?,
-            ?,
-            ?,
-            ?,
-            ?
-        )
-    ";
-
-
-    $stmtCommande = mysqli_prepare(
-        $connexion,
-        $sqlCommande
-    );
-
-
-    if (!$stmtCommande) {
-
-        die(
-            "Erreur préparation commande : "
-            . mysqli_error($connexion)
-        );
+        $date = date('Y-m-d');
 
     }
 
 
     /*
     =================================================
-    TYPES DES PARAMÈTRES
+    TRANSACTION
     =================================================
 
-    i = entier
-    s = texte
-    d = nombre décimal
+    Toutes les opérations seront validées ensemble.
+    Si une erreur survient, tout sera annulé.
     */
 
-    mysqli_stmt_bind_param(
-        $stmtCommande,
-        "isssids",
-        $idClient,
-        $type,
-        $statut,
-        $date,
-        $quantiteTotale,
-        $total,
-        $details
-    );
+    mysqli_begin_transaction($connexion);
 
 
-    /*
-    =================================================
-    EXÉCUTER L'INSERTION DE LA COMMANDE
-    =================================================
-    */
+    try {
 
-    if (!mysqli_stmt_execute($stmtCommande)) {
 
-        die(
-            "Erreur enregistrement commande : "
-            . mysqli_stmt_error($stmtCommande)
+        /*
+        =================================================
+        INSERTION DU CLIENT
+        =================================================
+
+        Ta table client contient :
+
+        id_client
+        nom
+        telephone
+        adresse
+
+        Il n'y a actuellement pas de colonne email.
+
+        On met donc l'adresse à vide.
+        */
+
+        $adresse = '';
+
+
+        $sqlClient = "
+            INSERT INTO client
+            (
+                nom,
+                telephone,
+                adresse
+            )
+            VALUES
+            (
+                ?,
+                ?,
+                ?
+            )
+        ";
+
+
+        $stmtClient = mysqli_prepare(
+            $connexion,
+            $sqlClient
         );
 
+
+        if (!$stmtClient) {
+
+            throw new Exception(
+                "Erreur préparation client : "
+                . mysqli_error($connexion)
+            );
+
+        }
+
+
+        mysqli_stmt_bind_param(
+            $stmtClient,
+            "sss",
+            $nom,
+            $numero,
+            $adresse
+        );
+
+
+        /*
+        Exécuter l'insertion du client
+        */
+
+        if (!mysqli_stmt_execute($stmtClient)) {
+
+            throw new Exception(
+                "Erreur enregistrement client : "
+                . mysqli_stmt_error($stmtClient)
+            );
+
+        }
+
+
+        /*
+        Récupérer l'ID du client
+        */
+
+        $idClient = mysqli_insert_id(
+            $connexion
+        );
+
+
+        mysqli_stmt_close(
+            $stmtClient
+        );
+
+
+        /*
+        =================================================
+        INSERTION DE LA COMMANDE
+        =================================================
+
+        id_commande est AUTO_INCREMENT.
+
+        On ne l'insère donc PAS.
+
+        Colonnes :
+
+        type
+        statut
+        date
+        nom
+        quantite
+        montant
+        id_client
+        */
+
+        $sqlCommande = "
+            INSERT INTO commande
+            (
+                type,
+                statut,
+                date,
+                nom,
+                quantite,
+                montant,
+                id_client
+            )
+            VALUES
+            (
+                ?,
+                ?,
+                ?,
+                ?,
+                ?,
+                ?,
+                ?
+            )
+        ";
+
+
+        $stmtCommande = mysqli_prepare(
+            $connexion,
+            $sqlCommande
+        );
+
+
+        if (!$stmtCommande) {
+
+            throw new Exception(
+                "Erreur préparation commande : "
+                . mysqli_error($connexion)
+            );
+
+        }
+
+
+        /*
+        =================================================
+        PARAMÈTRES
+        =================================================
+
+        s = chaîne
+        i = entier
+        d = nombre décimal
+
+        type       = s
+        statut     = s
+        date       = s
+        details    = s
+        quantite   = i
+        montant    = d
+        id_client  = i
+
+        Donc :
+
+        s s s s i d i
+
+        = "ssssidi"
+        */
+
+        mysqli_stmt_bind_param(
+            $stmtCommande,
+            "ssssidi",
+            $type,
+            $statut,
+            $date,
+            $details,
+            $quantiteTotale,
+            $total,
+            $idClient
+        );
+
+
+        /*
+        Exécuter l'insertion de la commande
+        */
+
+        if (!mysqli_stmt_execute($stmtCommande)) {
+
+            throw new Exception(
+                "Erreur enregistrement commande : "
+                . mysqli_stmt_error($stmtCommande)
+            );
+
+        }
+
+
+        /*
+        Récupérer l'ID de la commande créée
+        */
+
+        $idCommande = mysqli_insert_id(
+            $connexion
+        );
+
+
+        mysqli_stmt_close(
+            $stmtCommande
+        );
+
+
+        /*
+        =================================================
+        INSERTION DES PRODUITS
+        =================================================
+        */
+
+        $sqlProduit = "
+            INSERT INTO commande_produit
+            (
+                id_commande,
+                id_produit,
+                nom,
+                quantite,
+                prix
+            )
+            VALUES
+            (
+                ?,
+                ?,
+                ?,
+                ?,
+                ?
+            )
+        ";
+
+
+        $stmtProduit = mysqli_prepare(
+            $connexion,
+            $sqlProduit
+        );
+
+
+        if (!$stmtProduit) {
+
+            throw new Exception(
+                "Erreur préparation produit : "
+                . mysqli_error($connexion)
+            );
+
+        }
+
+
+        /*
+        =================================================
+        ENREGISTRER CHAQUE PRODUIT DU PANIER
+        =================================================
+        */
+
+        foreach ($panier as $article) {
+
+
+            $idProduit = (int)
+                $article['id_produit'];
+
+
+            $nomProduit = $article['nom'];
+
+
+            $quantiteProduit = (int)
+                $article['quantite'];
+
+
+            $prixProduit = (float)
+                $article['prix'];
+
+
+            /*
+            Types :
+
+            id_commande = i
+            id_produit  = i
+            nom         = s
+            quantite    = i
+            prix        = d
+
+            Donc :
+
+            "i i s i d"
+
+            = "i i s i d" sans espaces
+            = "iisid"
+            */
+
+            mysqli_stmt_bind_param(
+                $stmtProduit,
+                "iisid",
+                $idCommande,
+                $idProduit,
+                $nomProduit,
+                $quantiteProduit,
+                $prixProduit
+            );
+
+
+            if (!mysqli_stmt_execute($stmtProduit)) {
+
+                throw new Exception(
+                    "Erreur enregistrement produit : "
+                    . mysqli_stmt_error($stmtProduit)
+                );
+
+            }
+        }
+
+
+        mysqli_stmt_close(
+            $stmtProduit
+        );
+
+
+        /*
+        =================================================
+        VALIDATION DE LA TRANSACTION
+        =================================================
+        */
+
+        mysqli_commit(
+            $connexion
+        );
+
+
+        /*
+        =================================================
+        VIDER LE PANIER
+        =================================================
+        */
+
+        $_SESSION['panier'] = [];
+
+
+        /*
+        =================================================
+        MESSAGE DE CONFIRMATION
+        =================================================
+        */
+
+        echo "
+            <script>
+                alert(
+                    'Commande enregistrée avec succès !'
+                );
+
+                window.location.href =
+                    'commande_client.php';
+            </script>
+        ";
+
+        exit;
+
+
+    } catch (Exception $e) {
+
+
+        /*
+        =================================================
+        ANNULER TOUTES LES OPÉRATIONS EN CAS D'ERREUR
+        =================================================
+        */
+
+        mysqli_rollback(
+            $connexion
+        );
+
+
+        die(
+            "Erreur lors de l'enregistrement : "
+            . $e->getMessage()
+        );
     }
-
-
-    mysqli_stmt_close($stmtCommande);
-
-
-    /*
-    =================================================
-    VIDER LE PANIER
-    =================================================
-    */
-
-    $_SESSION['panier'] = [];
-
-
-    /*
-    =================================================
-    MESSAGE DE CONFIRMATION
-    =================================================
-    */
-
-    echo "
-        <script>
-            alert('Commande enregistrée avec succès !');
-            window.location.href = 'commande_client.php';
-        </script>
-    ";
-
-    exit;
 }
 
 ?>
@@ -401,6 +651,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             box-sizing: border-box;
         }
 
+
         body {
 
             margin: 0;
@@ -414,6 +665,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             color: #333;
 
         }
+
 
         .panier-container {
 
@@ -431,9 +683,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             box-shadow:
                 0 4px 15px
-                rgba(0,0,0,0.08);
+                rgba(0, 0, 0, 0.08);
 
         }
+
 
         .titre-panier {
 
@@ -447,6 +700,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         }
 
+
         .section-title {
 
             color: #008f4c;
@@ -459,11 +713,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         }
 
+
         label {
 
             font-weight: 600;
 
         }
+
 
         .form-control,
         .form-select {
@@ -476,6 +732,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         }
 
+
         .form-control:focus,
         .form-select:focus {
 
@@ -483,9 +740,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             box-shadow:
                 0 0 0 0.15rem
-                rgba(0,143,76,0.15);
+                rgba(0, 143, 76, 0.15);
 
         }
+
 
         .table {
 
@@ -494,6 +752,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             vertical-align: middle;
 
         }
+
 
         .table thead th {
 
@@ -507,11 +766,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         }
 
+
         .table tbody td {
 
             padding: 14px;
 
         }
+
 
         .prix {
 
@@ -520,6 +781,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             color: #008f4c;
 
         }
+
 
         .total-box {
 
@@ -535,6 +797,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         }
 
+
         .btn-success {
 
             background: #008f4c;
@@ -547,6 +810,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         }
 
+
         .btn-success:hover {
 
             background: #00753e;
@@ -554,6 +818,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             border-color: #00753e;
 
         }
+
 
         .btn-secondary {
 
@@ -591,6 +856,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 🛒 Votre panier est vide
 
             </h4>
+
 
             <p>
 
@@ -635,6 +901,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             </label>
 
+
             <input
                 type="text"
                 name="nom_client"
@@ -654,6 +921,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             </label>
 
+
             <input
                 type="text"
                 name="numero"
@@ -669,8 +937,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <label class="form-label">
 
                 Email du client
+                <small class="text-muted">
+                    (non enregistré dans la base actuelle)
+                </small>
 
             </label>
+
 
             <input
                 type="email"
@@ -690,6 +962,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             </label>
 
+
             <select
                 name="type"
                 class="form-select"
@@ -702,17 +975,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 </option>
 
+
                 <option value="Sur place">
 
                     Sur place
 
                 </option>
 
+
                 <option value="À emporter">
 
                     À emporter
 
                 </option>
+
 
                 <option value="Livraison">
 
@@ -733,6 +1009,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             </label>
 
+
             <select
                 name="statut"
                 class="form-select"
@@ -745,9 +1022,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 </option>
 
+
                 <option value="Terminée">
 
                     Terminée
+
+                </option>
+
+
+                <option value="Annulée">
+
+                    Annulée
 
                 </option>
 
@@ -763,6 +1048,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 Date
 
             </label>
+
 
             <input
                 type="date"
@@ -797,13 +1083,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             Produit
                         </th>
 
+
                         <th>
                             Prix unitaire
                         </th>
 
+
                         <th>
                             Quantité
                         </th>
+
 
                         <th>
                             Sous-total
@@ -825,8 +1114,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $prix =
                         (float)$article['prix'];
 
+
                     $quantite =
                         (int)$article['quantite'];
+
 
                     $sousTotal =
                         $prix * $quantite;
@@ -852,7 +1143,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                                 if ($quantite > 1) {
 
-                                    echo ' *' . $quantite;
+                                    echo ' x' . $quantite;
 
                                 }
 
@@ -931,6 +1222,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             </label>
 
+
             <input
                 type="text"
                 name="details"
@@ -958,11 +1250,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             </label>
 
+
             <input
                 type="number"
                 name="quantite"
                 class="form-control"
-                value="<?php echo $quantiteTotale; ?>"
+                value="<?php
+                    echo $quantiteTotale;
+                ?>"
                 readonly
             >
 
@@ -984,9 +1279,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     type="number"
                     name="montant"
                     class="form-control"
-                    value="<?php echo $total; ?>"
+                    value="<?php
+                        echo $total;
+                    ?>"
                     readonly
                 >
+
 
                 <span class="input-group-text">
 
@@ -1000,6 +1298,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
         <div class="d-flex gap-2">
+
 
             <a
                 href="commande_client.php"

@@ -3,7 +3,7 @@
 
 session_start();
 
-include "../php/connexion.php";
+include "../../php/connexion.php";
 
 $message = "";
 
@@ -70,7 +70,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                 /* Redirection vers le dashboard */
 
-                header("Location: dashboard.php");
+                header("Location: ../dashboard.php");
 
                 exit();
 
